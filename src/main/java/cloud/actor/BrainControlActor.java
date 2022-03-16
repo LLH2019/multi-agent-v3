@@ -13,6 +13,7 @@ import base.model.connect.bean.KafkaMsg;
 import cloud.bean.*;
 import cloud.global.GlobalActorRefName;
 import cloud.global.GlobalAkkaPara;
+import cloud.util.ReadTxt;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -53,8 +54,11 @@ public class BrainControlActor extends AbstractBehavior<BasicCommon> {
 //        this.kafkaConnectInActorRef = GlobalAkkaPara.globalActorRefMap.get(GlobalActorRefName.CLOUD_KAFKA_CONNECT_IN_ACTOR);
 //        init();
         this.ref = context.getSelf();
-        setupResourceActor();
-        setupSecondBrainActor();
+        ReadTxt readTxt =  new ReadTxt();
+        List<List<String>> taskAndResources = readTxt.readTxtData();
+
+        setupResourceActor(taskAndResources.get(1));
+        setupSecondBrainActor(taskAndResources.get(0));
 
 //        startBiding();
     }
@@ -94,18 +98,19 @@ public class BrainControlActor extends AbstractBehavior<BasicCommon> {
 //        }
 //    }
 
-    private void setupSecondBrainActor() {
-        List<String> processTasks = new ArrayList<>();
+    private void setupSecondBrainActor(List<String> tasks) {
+        List<String> processTasks = tasks;
+//                = new ArrayList<>();
 //        processTasks.add("3,6,5,2,1");
 //        processTasks.add("3,6,2,5,1");
-        processTasks.add("0,1,2");
-        processTasks.add("3,4,5,6");
-        processTasks.add("7,8,9");
-        processTasks.add("10,11,12");
-        processTasks.add("13,14,15,16");
-        processTasks.add("17,18,19");
-        processTasks.add("20,21,22");
-        processTasks.add("23,24,25,26");
+//        processTasks.add("0,1,2");
+//        processTasks.add("3,4,5,6");
+//        processTasks.add("7,8,9");
+//        processTasks.add("10,11,12");
+//        processTasks.add("13,14,15,16");
+//        processTasks.add("17,18,19");
+//        processTasks.add("20,21,22");
+//        processTasks.add("23,24,25,26");
 
         List<Integer> processNums = new ArrayList<>();
         for (String task : processTasks) {
@@ -133,22 +138,24 @@ public class BrainControlActor extends AbstractBehavior<BasicCommon> {
         secondBrainRefMaps.get("secondBrain0").tell(startBiding);
     }
 
-    private void setupResourceActor() {
-        List<String> processTimes = new ArrayList<>();
+    private void setupResourceActor(List<String> resources) {
+        List<String> processTimes = resources;
+
+//                new ArrayList<>();
 //        processTimes.add("3,5,7,9,999,45,67,4");
 //        processTimes.add("5,7,4,6,3,7,3,999");
 //        processTimes.add("999,23,45,4,5,6,2,5");
 //        processTimes.add("4,999,5,6,3,23,5,7");
 //        processTimes.add("66,45,34,2,5,6,7,9");
 
-        processTimes.add("5,10,9999,5,9999,9999,10,10,9999,1,3,12,4,3,10,9999,11,6,11,10,5,9999,9999,2,7,9,9");
-        processTimes.add("3,9999,10,7,8,10,8,9999,10,4,1,11,6,6,9999,9,9,7,9999,5,4,9,8,8,4,9,9999");
-        processTimes.add("5,5,9999,3,5,9999,9,9999,6,5,6,7,2,7,7,8,9999,1,9,9,2,9999,9,5,7,9999,3");
-        processTimes.add("3,8,5,9,2,5,6,7,4,6,5,8,10,8,4,7,6,4,9,10,6,9,3,9,8,8,7");
-        processTimes.add("3,3,6,8,6,6,4,6,8,9999,9,10,3,9,9,4,7,6,9,11,7,11,8,9999,9,5,1");
-        processTimes.add("9999,9,2,9999,7,4,7,5,9,10,7,5,9,9999,8,2,5,9,7,9999,9999,9,6,4,9999,6,5");
-        processTimes.add("10,9,4,9,10,1,9999,2,10,9999,8,6,5,10,6,7,3,9999,8,10,10,10,9999,9999,10,7,8");
-        processTimes.add("9,6,5,9999,9,7,9999,4,9999,7,4,9,7,9999,9999,9999,6,10,4,9999,9999,5,10,10,9999,1,9999");
+//        processTimes.add("5,10,9999,5,9999,9999,10,10,9999,1,3,12,4,3,10,9999,11,6,11,10,5,9999,9999,2,7,9,9");
+//        processTimes.add("3,9999,10,7,8,10,8,9999,10,4,1,11,6,6,9999,9,9,7,9999,5,4,9,8,8,4,9,9999");
+//        processTimes.add("5,5,9999,3,5,9999,9,9999,6,5,6,7,2,7,7,8,9999,1,9,9,2,9999,9,5,7,9999,3");
+//        processTimes.add("3,8,5,9,2,5,6,7,4,6,5,8,10,8,4,7,6,4,9,10,6,9,3,9,8,8,7");
+//        processTimes.add("3,3,6,8,6,6,4,6,8,9999,9,10,3,9,9,4,7,6,9,11,7,11,8,9999,9,5,1");
+//        processTimes.add("9999,9,2,9999,7,4,7,5,9,10,7,5,9,9999,8,2,5,9,7,9999,9999,9,6,4,9999,6,5");
+//        processTimes.add("10,9,4,9,10,1,9999,2,10,9999,8,6,5,10,6,7,3,9999,8,10,10,10,9999,9999,10,7,8");
+//        processTimes.add("9,6,5,9999,9,7,9999,4,9999,7,4,9,7,9999,9999,9999,6,10,4,9999,9999,5,10,10,9999,1,9999");
 
         this.resourceNum = processTimes.size();
 
