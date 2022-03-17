@@ -1,7 +1,5 @@
 package cloud.util;
 
-import com.sandinh.paho.akka.MqttPubSub;
-
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,10 +11,10 @@ import java.util.Random;
  * @description：仿真数据生成
  */
 public class SimulationDataGenerator {
-    private int taskSize =100;
-    private int resourceSize = 100;
+//    private int taskSize =10;
+//    private int resourceSize = 20;
 
-    public List<List<int[]>> generateData() {
+    public List<List<int[]>> generateData(int taskSize, int resourceSize) {
         List<List<int[]>> tasks = new ArrayList<>();
         Random random = new Random();
 
@@ -46,11 +44,11 @@ public class SimulationDataGenerator {
 //            tasks.get(i)[j%tasks.get(i).length] = 9999;
 //        }
 
-        printData(tasks);
+        printData(tasks,resourceSize);
         return tasks;
     }
 
-    private void printData(List<List<int[]>> tasks) {
+    private void printData(List<List<int[]>> tasks, int resourceSize) {
         for (int i=0; i<tasks.size(); i++) {
             System.out.println( i + "  " + tasks.get(i).size());
             for (int j=0; j<tasks.get(i).size(); j++) {
@@ -67,15 +65,17 @@ public class SimulationDataGenerator {
     public static void main(String[] args) {
 
         SimulationDataGenerator simulationDataGenerator = new SimulationDataGenerator();
-        List<List<int[]>> datas = simulationDataGenerator.generateData();
+        int taskSize = 10;
+        int resourceSize = 10;
+
+        List<List<int[]>> datas = simulationDataGenerator.generateData(taskSize, resourceSize);
 
         try {
-            File writeName = new File("D:\\Coding\\JavaProject\\multi-agent-v3\\data\\write100.txt"); // 相对路径，如果没有则要建立一个新的output.txt文件
+            File writeName = new File("D:\\Coding\\JavaProject\\multi-agent-v3\\data\\write1010.txt"); // 相对路径，如果没有则要建立一个新的output.txt文件
             if (!writeName.exists()) {
                 writeName.createNewFile(); // 创建新文件,有同名的文件的话直接覆盖
             }
-            FileWriter writer = new FileWriter(writeName);
-            BufferedWriter out = new BufferedWriter(writer);
+            BufferedWriter out = new BufferedWriter(new FileWriter(writeName));
             for (int i = 0; i < datas.size(); i++) {
                 out.write(String.valueOf(datas.get(i).size()));
                 out.newLine();
@@ -92,6 +92,7 @@ public class SimulationDataGenerator {
                 }
             }
             out.flush(); // 把缓存区内容压入文件
+            out.close();
         } catch (IOException e) {
             e.printStackTrace();
         }

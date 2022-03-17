@@ -52,13 +52,9 @@ public class MdResourceActor extends AbstractBehavior<BasicCommon> {
         System.out.println(" processTime " + processTime);
 
         this.name = name;
-//        this.haveAssignedTimes = new CopyOnWriteArrayList<>();
-//
-//        Collections.sort(this.haveAssignedTimes,new Comparator<ProcessTime>() {
-//            public int compare(ProcessTime a, ProcessTime b) {
-//                return a.getStartTime() - b.getStartTime();
-//            }
-//        });
+        this.haveAssignedTimes = new CopyOnWriteArrayList<>();
+
+
         logger.log(Level.INFO, "MdResourceActor init...");
     }
 
@@ -78,10 +74,17 @@ public class MdResourceActor extends AbstractBehavior<BasicCommon> {
     private Behavior<BasicCommon> handleDealMsg(DealMsg msg) {
         ProcessTime time = new ProcessTime(msg.getStartTime(), msg.getEndTime());
         haveAssignedTimes.add(time);
-
+        System.out.print("dealing " + msg.getTaskName() + " " + msg.getResourceName());
         for (int i=0; i<haveAssignedTimes.size(); i++) {
-            System.out.println("handle deal " + haveAssignedTimes.get(i).getStartTime() + " " + haveAssignedTimes.get(i).getEndTime());
+            System.out.print("handle deal " + haveAssignedTimes.get(i).getStartTime() + " " + haveAssignedTimes.get(i).getEndTime());
         }
+        System.out.println();
+
+        Collections.sort(this.haveAssignedTimes,new Comparator<ProcessTime>() {
+            public int compare(ProcessTime a, ProcessTime b) {
+                return a.getStartTime() - b.getStartTime();
+            }
+        });
 
         return this;
     }
@@ -98,11 +101,11 @@ public class MdResourceActor extends AbstractBehavior<BasicCommon> {
 //        });
 
 
-        for (int i=0; i<haveAssignedTimes.size(); i++) {
-            System.out.println("in func " + msg.getTask() + " " + msg.getSender() + " "
-                   + msg.getNo() + " " + i + " " + msg.getStartTime() + " "+
-                    " " + haveAssignedTimes.get(i).getStartTime() + " " + haveAssignedTimes.get(i).getEndTime());
-        }
+//        for (int i=0; i<haveAssignedTimes.size(); i++) {
+//            System.out.println("in func " + msg.getTask() + " " + msg.getSender() + " "
+//                   + msg.getNo() + " " + i + " " + msg.getStartTime() + " "+
+//                    " " + haveAssignedTimes.get(i).getStartTime() + " " + haveAssignedTimes.get(i).getEndTime());
+//        }
 
         int startTime = msg.getStartTime();
 
@@ -111,14 +114,14 @@ public class MdResourceActor extends AbstractBehavior<BasicCommon> {
 
         if (haveAssignedTimes.size() == 0) {
             ProcessTime time = new ProcessTime(startTime, startTime+spendingTime);
-            System.out.println("777777777 " + startTime + " " + (startTime+spendingTime));
+//            System.out.println("777777777 " + startTime + " " + (startTime+spendingTime));
 
             waitProcessTimes.add(time);
         } else {
 
             int waitStartTime = haveAssignedTimes.get(0).getEndTime();
 
-            System.out.println("9999999");
+//            System.out.println("9999999");
 
             boolean tag = true;
             for (int i = 1; i < haveAssignedTimes.size(); i++) {
@@ -136,7 +139,7 @@ public class MdResourceActor extends AbstractBehavior<BasicCommon> {
                 waitStartTime = Math.max(waitStartTime, startTime);
                 ProcessTime time = new ProcessTime(waitStartTime, waitStartTime+spendingTime);
 
-                System.out.println("000000000 " + waitStartTime + " " + (waitStartTime+spendingTime));
+//                System.out.println("000000000 " + waitStartTime + " " + (waitStartTime+spendingTime));
                 waitProcessTimes.add(time);
             }
         }
@@ -163,6 +166,13 @@ public class MdResourceActor extends AbstractBehavior<BasicCommon> {
 //            ProcessTime end = new ProcessTime(waitStartTime, 9999);
 //            waitProcessTimes.add(end);
 //        }
+
+        System.out.print("1111111 ");
+        for (int i=0; i<haveAssignedTimes.size(); i++) {
+            System.out.print("assign " + haveAssignedTimes.get(i).getStartTime() + " " + haveAssignedTimes.get(i).getEndTime());
+        }
+        System.out.println("process " + waitProcessTimes.get(0).getStartTime() + " " +waitProcessTimes.get(0).getEndTime());
+
         proposeMsg.setNo(msg.getNo());
         proposeMsg.setTaskName(msg.getSender());
         proposeMsg.setWaitProcessTimes(waitProcessTimes);

@@ -67,7 +67,7 @@ public class SecondBrainActor extends AbstractBehavior<BasicCommon> {
 
     private Behavior<BasicCommon> handleBiding(StartBiding bind) {
 
-        System.out.println("66666666666");
+//        System.out.println("66666666666");
         BidingMsg bidingMsg = new BidingMsg();
         bidingMsg.setTask(tasks.get(bind.getRound()));
         bidingMsg.setNo(bind.getRound());

@@ -13,4 +13,6 @@ import lombok.Data;
 public class DealMsg implements BasicCommon {
     private Integer startTime;
     private Integer endTime;
+    private String taskName;
+    private String resourceName;
 }

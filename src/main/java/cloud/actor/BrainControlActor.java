@@ -15,6 +15,7 @@ import cloud.global.GlobalActorRefName;
 import cloud.global.GlobalAkkaPara;
 import cloud.util.ReadTxt;
 
+import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -188,14 +189,14 @@ public class BrainControlActor extends AbstractBehavior<BasicCommon> {
 
     private Behavior<BasicCommon> handleProcessMsg(ProposeMsg msg) {
 
-        System.out.println("proposeMsg "  + msg.getTaskName() + " " + msg.getResourceName() + " " + msg.getNo() + " " +msg.getWaitProcessTimes().get(0).getStartTime() +
-                " " + msg.getWaitProcessTimes().get(0).getEndTime() + " " );
+//        System.out.println("proposeMsg "  + msg.getTaskName() + " " + msg.getResourceName() + " " + msg.getNo() + " " +msg.getWaitProcessTimes().get(0).getStartTime() +
+//                " " + msg.getWaitProcessTimes().get(0).getEndTime() + " " );
 
 
 //        System.out.println("brain processMsg!!!");
         ProcessTime processTime = msg.getWaitProcessTimes().get(0);
         List<ProcessTime> processTimes = processTimeMaps.get(msg.getTaskName());
-        if (processTimes.size()-1 <msg.getNo()) {
+        if (processTimes.size()-1 <=msg.getNo()) {
            ProcessTime time = new ProcessTime(processTime.getStartTime(), processTime.getEndTime());
            time.setResourceName(msg.getResourceName());
            processTimes.add(time);
@@ -213,14 +214,18 @@ public class BrainControlActor extends AbstractBehavior<BasicCommon> {
         haveSendResourceMaps.put(msg.getTaskName(), haveSendResource);
         int round = haveSendResource/resourceNum;
         if (haveSendResource%resourceNum==0 ) {
+            DealMsg dealMsg = new DealMsg();
+            dealMsg.setTaskName(msg.getTaskName());
+            dealMsg.setResourceName(processTimes.get(round-1).getResourceName());
+            dealMsg.setStartTime(processTimes.get(round-1).getStartTime());
+            dealMsg.setEndTime(processTimes.get(round-1).getEndTime());
+            mdResourceRefMaps.get(processTimes.get(round-1).getResourceName()).tell(dealMsg);
             if (round<taskProcessNum.get(msg.getTaskName())) {
-                DealMsg dealMsg = new DealMsg();
-                dealMsg.setStartTime(processTimes.get(round-1).getStartTime());
-                dealMsg.setEndTime(processTimes.get(round-1).getEndTime());
-                mdResourceRefMaps.get(processTimes.get(round-1).getResourceName()).tell(dealMsg);
 
+
+//
 //                try {
-//                    Thread.sleep(10000);
+//                    Thread.sleep(100);
 //                } catch (InterruptedException e) {
 //                    e.printStackTrace();
 //                }
@@ -234,16 +239,35 @@ public class BrainControlActor extends AbstractBehavior<BasicCommon> {
                 StartBiding startBiding = new StartBiding();
                 startBiding.setRound(0);
                 startBiding.setStartTime(0);
-                int curResourceNum = Integer.parseInt(msg.getTaskName().substring(msg.getTaskName().length()-1)) +1;
+                int curResourceNum = Integer.parseInt(msg.getTaskName().substring(11)) +1;
                 if (curResourceNum<secondBrainRefMaps.size()) {
                     secondBrainRefMaps.get("secondBrain"+curResourceNum).tell(startBiding);
                 }
             }
-            if (round == taskProcessNum.get(msg.getTaskName())) {
-                for (int i=0; i<taskProcessNum.get(msg.getTaskName()); i++) {
-                    System.out.println("round " + i + " " + msg.getTaskName() + " " + processTimes.get(i).getStartTime() + " " + processTimes.get(i).getEndTime() + " " + processTimes.get(i).getResourceName());
+
+            try {
+                File writeName = new File("D:\\Coding\\JavaProject\\multi-agent-v3\\data\\output1010.txt"); // 相对路径，如果没有则要建立一个新的output.txt文件
+                if (!writeName.exists()) {
+                    writeName.createNewFile(); // 创建新文件,有同名的文件的话直接覆盖
                 }
+                FileOutputStream fos = new FileOutputStream(writeName,true);
+                OutputStreamWriter osw = new OutputStreamWriter(fos);
+                BufferedWriter out = new BufferedWriter(osw);
+
+                if (round == taskProcessNum.get(msg.getTaskName())) {
+                    for (int i = 0; i < taskProcessNum.get(msg.getTaskName()); i++) {
+                        String str = "round " + i + " " + msg.getTaskName() + " " + processTimes.get(i).getStartTime() + " "
+                                + processTimes.get(i).getEndTime() + " " + processTimes.get(i).getResourceName();
+                        System.out.println(str);
+                        out.write(str);
+                        out.newLine();
+                    }
+                }
+                out.flush(); // 把缓存区内容压入文件
+            } catch (IOException e) {
+                e.printStackTrace();
             }
+
 //            System.out.println("i  am fine !!!!");
         }
 
