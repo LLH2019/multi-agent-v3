@@ -24,8 +24,11 @@ public class ActorBootstrapMain {
     private static Logger logger = Logger.getLogger(ActorBootstrapMain.class.getName());
     public static void main(String[] args) throws IOException {
 
-//        GlobalAkkaPara.taskNum = Integer.parseInt()
-        System.out.println(args[0]);
+        GlobalAkkaPara.taskNum = Integer.parseInt(args[0]);
+        GlobalAkkaPara.rapid = Integer.parseInt(args[1]);
+        GlobalAkkaPara.dataPath = args[2];
+//        System.out.println(args[0]);
+
         logger.log(Level.INFO, "CloudBootstrapMain start...");
         ActorSystem<Void> system = GlobalAkkaPara.system;
         ActorRef<BasicCommon> brainControlActorRef = system.systemActorOf(BrainControlActor.create(),

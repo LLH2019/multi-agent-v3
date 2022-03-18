@@ -20,4 +20,9 @@ public class GlobalAkkaPara {
     public static int taskNum = 0;
     public static int rapid =0;
 
+    public static int taskSize = 20;
+    public static int resourceSize = 20;
+
+    public static String dataPath = "/";
+
 }

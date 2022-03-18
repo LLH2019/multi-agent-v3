@@ -9,9 +9,7 @@ import akka.actor.typed.javadsl.Behaviors;
 import akka.actor.typed.javadsl.Receive;
 import base.model.bean.BasicCommon;
 import base.model.bean.DeviceModel;
-import base.model.connect.bean.KafkaMsg;
 import cloud.bean.*;
-import cloud.global.GlobalActorRefName;
 import cloud.global.GlobalAkkaPara;
 import cloud.util.ReadTxt;
 
@@ -56,7 +54,7 @@ public class BrainControlActor extends AbstractBehavior<BasicCommon> {
 //        init();
         this.ref = context.getSelf();
         ReadTxt readTxt =  new ReadTxt();
-        List<List<String>> taskAndResources = readTxt.readTxtData();
+        List<List<String>> taskAndResources = readTxt.readTxtData(GlobalAkkaPara.taskNum, GlobalAkkaPara.rapid);
 
         setupResourceActor(taskAndResources.get(1));
         setupSecondBrainActor(taskAndResources.get(0));
@@ -246,7 +244,7 @@ public class BrainControlActor extends AbstractBehavior<BasicCommon> {
             }
 
             try {
-                File writeName = new File("D:\\Coding\\JavaProject\\multi-agent-v3\\data\\output1010.txt"); // 相对路径，如果没有则要建立一个新的output.txt文件
+                File writeName = new File(GlobalAkkaPara.dataPath +"output"+ GlobalAkkaPara.resourceSize + "-" + (GlobalAkkaPara.taskSize*GlobalAkkaPara.taskNum) +"-" +GlobalAkkaPara. rapid +".txt"); // 相对路径，如果没有则要建立一个新的output.txt文件
                 if (!writeName.exists()) {
                     writeName.createNewFile(); // 创建新文件,有同名的文件的话直接覆盖
                 }

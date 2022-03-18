@@ -249,3 +249,10 @@ round 0 secondBrain8 51 59 Resource3
 round 1 secondBrain8 59 75 Resource3
 round 2 secondBrain8 75 81 Resource1
 round 3 secondBrain8 81 93 Resource2
+round 0 secondBrain9 63 67 Resource9
+round 1 secondBrain9 67 76 Resource4
+round 2 secondBrain9 76 90 Resource6
+round 3 secondBrain9 90 98 Resource6
+round 4 secondBrain9 98 106 Resource6
+round 5 secondBrain9 106 111 Resource8
+round 6 secondBrain9 111 119 Resource5

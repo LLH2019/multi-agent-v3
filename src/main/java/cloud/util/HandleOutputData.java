@@ -1,5 +1,7 @@
 package cloud.util;
 
+import scala.Int;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -12,7 +14,7 @@ import java.util.*;
  * @description：处理输出数据
  */
 public class HandleOutputData {
-    public void handleOutputData() {
+    public int handleOutputData(int taskNum, int rapid, int taskSize, int resourceSize) {
         TreeMap<String, List<int[]>> resourceMaps = new TreeMap<>(new Comparator<String>() {
             @Override
             public int compare(String o1, String o2) {
@@ -27,7 +29,7 @@ public class HandleOutputData {
         try { // 防止文件建立或读取失败，用catch捕捉错误并打印，也可以throw
 
             /* 读入TXT文件 */
-            String pathname ="D:\\Coding\\JavaProject\\multi-agent-v3\\data\\output1010.txt"; // 绝对路径或相对路径都可以，这里是绝对路径，写入文件时演示相对路径
+            String pathname ="D:\\Coding\\JavaProject\\multi-agent-v3\\data\\output" + resourceSize + "-" + (taskSize*taskNum) +"-" + rapid +".txt"; // 绝对路径或相对路径都可以，这里是绝对路径，写入文件时演示相对路径
             File filename = new File(pathname); // 要读取以上路径的input。txt文件
             InputStreamReader reader = new InputStreamReader(
                     new FileInputStream(filename)); // 建立一个输入流对象reader
@@ -70,11 +72,35 @@ public class HandleOutputData {
             System.out.println();
         }
         System.out.println(maxNum);
+        return maxNum;
     }
 
     public static void main(String[] args) {
         HandleOutputData handleOutputData = new HandleOutputData();
-        handleOutputData.handleOutputData();
+
+        Map<Integer, List<Integer>>  maxNumMaps =  new HashMap<>();
+        for(int taskNum=1; taskNum<=10; taskNum++) {
+            if (!maxNumMaps.containsKey(taskNum)) {
+                maxNumMaps.put(taskNum, new ArrayList<>());
+            }
+            for (int rapid = 1; rapid <= 10; rapid++) {
+                int taskSize = 20;
+                int resourceSize = 20;
+                int maxNum = handleOutputData.handleOutputData(taskNum, rapid, taskSize, resourceSize);
+
+                List<Integer> maxNumList = maxNumMaps.get(taskNum);
+                maxNumList.add(maxNum);
+            }
+        }
+
+        for (Map.Entry<Integer, List<Integer>> entry: maxNumMaps.entrySet()) {
+            System.out.print(entry.getKey() + " ");
+            for (int val : entry.getValue()) {
+                System.out.print(val + " ");
+            }
+            System.out.println();
+        }
+
     }
 
 }
