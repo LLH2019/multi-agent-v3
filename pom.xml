@@ -13,12 +13,12 @@
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
         <scala.binary.version>2.13</scala.binary.version>
-        <alpakka-kafka.version>2.0.6</alpakka-kafka.version>
-        <akka-persistence-jdbc.version>5.0.0</akka-persistence-jdbc.version>
-        <akka-projection.version>1.1.0</akka-projection.version>
-        <akka-management.version>1.0.9</akka-management.version>
+<!--        <alpakka-kafka.version>2.0.6</alpakka-kafka.version>-->
+<!--        <akka-persistence-jdbc.version>5.0.0</akka-persistence-jdbc.version>-->
+<!--        <akka-projection.version>1.1.0</akka-projection.version>-->
+<!--        <akka-management.version>1.0.9</akka-management.version>-->
         <akka.version>2.6.13</akka.version>
-        <APP_CONFIG>application.conf</APP_CONFIG>
+<!--        <APP_CONFIG>application.conf</APP_CONFIG>-->
     </properties>
 
     <dependencyManagement>
@@ -47,14 +47,19 @@
         </dependencies>
     </dependencyManagement>
     <dependencies>
-        <dependency>
-            <groupId>com.typesafe.akka</groupId>
-            <artifactId>akka-stream_${scala.binary.version}</artifactId>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>com.typesafe.akka</groupId>-->
+<!--            <artifactId>akka-stream_${scala.binary.version}</artifactId>-->
+<!--        </dependency>-->
+
+<!--        <dependency>-->
+<!--            <groupId>com.typesafe.akka</groupId>-->
+<!--            <artifactId>akka-cluster-typed_${scala.binary.version}</artifactId>-->
+<!--        </dependency>-->
 
         <dependency>
             <groupId>com.typesafe.akka</groupId>
-            <artifactId>akka-cluster-typed_${scala.binary.version}</artifactId>
+            <artifactId>akka-actor_${scala.binary.version}</artifactId>
         </dependency>
 
         <dependency>
@@ -69,11 +74,11 @@
             <version>1.2.5</version>
         </dependency>
 
-        <dependency>
-            <groupId>com.sandinh</groupId>
-            <artifactId>paho-akka_2.11</artifactId>
-            <version>1.2.0</version>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>com.sandinh</groupId>-->
+<!--            <artifactId>paho-akka_2.11</artifactId>-->
+<!--            <version>1.2.0</version>-->
+<!--        </dependency>-->
 
         <!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
         <dependency>
@@ -83,11 +88,11 @@
             <scope>provided</scope>
         </dependency>
 
-        <dependency>
-            <groupId>com.lightbend.akka</groupId>
-            <artifactId>akka-persistence-jdbc_${scala.binary.version}</artifactId>
-            <version>${akka-persistence-jdbc.version}</version>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>com.lightbend.akka</groupId>-->
+<!--            <artifactId>akka-persistence-jdbc_${scala.binary.version}</artifactId>-->
+<!--            <version>${akka-persistence-jdbc.version}</version>-->
+<!--        </dependency>-->
         <dependency>
             <groupId>com.typesafe.akka</groupId>
             <artifactId>akka-persistence-typed_${scala.binary.version}</artifactId>
@@ -101,22 +106,22 @@
             <artifactId>akka-serialization-jackson_${scala.binary.version}</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>com.lightbend.akka</groupId>
-            <artifactId>akka-projection-eventsourced_${scala.binary.version}</artifactId>
-            <version>${akka-projection.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.lightbend.akka</groupId>
-            <artifactId>akka-projection-jdbc_${scala.binary.version}</artifactId>
-            <version>${akka-projection.version}</version>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>com.lightbend.akka</groupId>-->
+<!--            <artifactId>akka-projection-eventsourced_${scala.binary.version}</artifactId>-->
+<!--            <version>${akka-projection.version}</version>-->
+<!--        </dependency>-->
+<!--        <dependency>-->
+<!--            <groupId>com.lightbend.akka</groupId>-->
+<!--            <artifactId>akka-projection-jdbc_${scala.binary.version}</artifactId>-->
+<!--            <version>${akka-projection.version}</version>-->
+<!--        </dependency>-->
 
-        <dependency>
-            <groupId>com.typesafe.akka</groupId>
-            <artifactId>akka-stream-kafka_${scala.binary.version}</artifactId>
-            <version>${alpakka-kafka.version}</version>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>com.typesafe.akka</groupId>-->
+<!--            <artifactId>akka-stream-kafka_${scala.binary.version}</artifactId>-->
+<!--            <version>${alpakka-kafka.version}</version>-->
+<!--        </dependency>-->
 
 
         <dependency>
@@ -172,16 +177,16 @@
             <artifactId>akka-cluster-tools_${scala.binary.version}</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>com.lightbend.akka.management</groupId>
-            <artifactId>akka-management-cluster-http_${scala.binary.version}</artifactId>
-            <version>${akka-management.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.lightbend.akka.management</groupId>
-            <artifactId>akka-management-cluster-bootstrap_${scala.binary.version}</artifactId>
-            <version>${akka-management.version}</version>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>com.lightbend.akka.management</groupId>-->
+<!--            <artifactId>akka-management-cluster-http_${scala.binary.version}</artifactId>-->
+<!--            <version>${akka-management.version}</version>-->
+<!--        </dependency>-->
+<!--        <dependency>-->
+<!--            <groupId>com.lightbend.akka.management</groupId>-->
+<!--            <artifactId>akka-management-cluster-bootstrap_${scala.binary.version}</artifactId>-->
+<!--            <version>${akka-management.version}</version>-->
+<!--        </dependency>-->
 
         <dependency>
             <groupId>org.mongodb</groupId>
@@ -197,6 +202,67 @@
 
 
     </dependencies>
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <!--这里要替换成jar包main方法所在类 -->
+                            <mainClass>cloud.ActorBootstrapMain</mainClass>
+                        </manifest>
+                        <manifestEntries>
+                            <Class-Path>.</Class-Path>
+                        </manifestEntries>
+                    </archive>
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>make-assembly</id> <!-- this is used for inheritance merges -->
+                        <phase>package</phase> <!-- 指定在打包节点执行jar包合并操作 -->
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>2.3</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <transformers>
+                                <!--<transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                    <mainClass>flink.KafkaDemo1</mainClass>
+                                </transformer>-->
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+                                    <resource>reference.conf</resource>
+                                </transformer>
+                            </transformers>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+        </plugins>
+    </build>
+
+
+
+
+
     <!--    <build>-->
     <!--        <pluginManagement>-->
     <!--            <plugins>-->
@@ -220,34 +286,6 @@
     <!--        </pluginManagement>-->
     <!--    </build>-->
 
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.5.1</version>
-                <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>exec-maven-plugin</artifactId>
-                <version>1.6.0</version>
-                <configuration>
-                    <executable>java</executable>
-                    <arguments>
-                        <argument>-Djava.library.path=target/lib</argument>
-                        <argument>-Dconfig.resource=${APP_CONFIG}</argument>
-                        <argument>-classpath</argument>
-                        <classpath />
-                        <argument>cloud.ActorBootstrapMain</argument>
-                    </arguments>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
 
     <!--    <build>-->
     <!--        <pluginManagement>-->

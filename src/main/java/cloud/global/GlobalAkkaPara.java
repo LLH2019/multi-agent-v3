@@ -16,4 +16,8 @@ public class GlobalAkkaPara {
     public final static Map<String, ActorRef<BasicCommon>> globalActorRefMap = new HashMap<>();
     public final static ActorSystem<Void> system = ActorSystem.create(Behaviors.empty(), "bootstrap");
     public final static List<String> podList = new ArrayList<>(Arrays.asList("pod-111"));
+
+    public static int taskNum = 0;
+    public static int rapid =0;
+
 }

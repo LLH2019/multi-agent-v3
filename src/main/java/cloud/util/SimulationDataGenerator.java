@@ -65,37 +65,41 @@ public class SimulationDataGenerator {
     public static void main(String[] args) {
 
         SimulationDataGenerator simulationDataGenerator = new SimulationDataGenerator();
-        int taskSize = 10;
-        int resourceSize = 10;
 
-        List<List<int[]>> datas = simulationDataGenerator.generateData(taskSize, resourceSize);
+        for(int taskNum=1; taskNum<=10; taskNum++) {
+            for (int rapid=1; rapid<=10; rapid++) {
 
-        try {
-            File writeName = new File("D:\\Coding\\JavaProject\\multi-agent-v3\\data\\write1010.txt"); // 相对路径，如果没有则要建立一个新的output.txt文件
-            if (!writeName.exists()) {
-                writeName.createNewFile(); // 创建新文件,有同名的文件的话直接覆盖
-            }
-            BufferedWriter out = new BufferedWriter(new FileWriter(writeName));
-            for (int i = 0; i < datas.size(); i++) {
-                out.write(String.valueOf(datas.get(i).size()));
-                out.newLine();
-                for (int j = 0; j < datas.get(i).size(); j++) {
-                    StringBuffer sb = new StringBuffer();
-                    for (int k = 0; k < datas.get(i).get(j).length; k++) {
-                        sb.append(datas.get(i).get(j)[k]);
-                        sb.append(',');
+                int taskSize = 20;
+                int resourceSize = 20;
+
+                List<List<int[]>> datas = simulationDataGenerator.generateData(taskSize*taskNum, resourceSize);
+
+                try {
+                    File writeName = new File("D:\\Coding\\JavaProject\\multi-agent-v3\\data\\write" + resourceSize + "-" + (taskSize*taskNum) +"-" + rapid +".txt"); // 相对路径，如果没有则要建立一个新的output.txt文件
+                    if (!writeName.exists()) {
+                        writeName.createNewFile(); // 创建新文件,有同名的文件的话直接覆盖
                     }
+                    BufferedWriter out = new BufferedWriter(new FileWriter(writeName));
+                    for (int i = 0; i < datas.size(); i++) {
+                        out.write(String.valueOf(datas.get(i).size()));
+                        out.newLine();
+                        for (int j = 0; j < datas.get(i).size(); j++) {
+                            StringBuffer sb = new StringBuffer();
+                            for (int k = 0; k < datas.get(i).get(j).length; k++) {
+                                sb.append(datas.get(i).get(j)[k]);
+                                sb.append(',');
+                            }
 
-                    sb.deleteCharAt(sb.length() - 1);
-                    out.write(sb.toString());
-                    out.newLine();
+                            sb.deleteCharAt(sb.length() - 1);
+                            out.write(sb.toString());
+                            out.newLine();
+                        }
+                    }
+                    out.flush(); // 把缓存区内容压入文件
+                    out.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
-            }
-            out.flush(); // 把缓存区内容压入文件
-            out.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
 //        //第一步：设置输出的文件路径
 //        //如果该目录下不存在该文件，则文件会被创建到指定目录下。如果该目录有同名文件，那么该文件将被覆盖。
@@ -128,7 +132,8 @@ public class SimulationDataGenerator {
 //        }catch (IOException e){
 //            System.out.println("文件读写出错");
 //        }
-
+            }
+        }
     }
 
 }

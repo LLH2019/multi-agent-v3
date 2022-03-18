@@ -6,7 +6,6 @@ import akka.actor.typed.Props;
 import akka.http.javadsl.Http;
 import akka.http.javadsl.ServerBinding;
 import cloud.actor.BrainControlActor;
-import cloud.actor.CloudKafkaConnectInActor;
 import base.model.bean.BasicCommon;
 import cloud.global.GlobalActorRefName;
 import cloud.global.GlobalAkkaPara;
@@ -25,6 +24,8 @@ public class ActorBootstrapMain {
     private static Logger logger = Logger.getLogger(ActorBootstrapMain.class.getName());
     public static void main(String[] args) throws IOException {
 
+//        GlobalAkkaPara.taskNum = Integer.parseInt()
+        System.out.println(args[0]);
         logger.log(Level.INFO, "CloudBootstrapMain start...");
         ActorSystem<Void> system = GlobalAkkaPara.system;
         ActorRef<BasicCommon> brainControlActorRef = system.systemActorOf(BrainControlActor.create(),
@@ -37,10 +38,10 @@ public class ActorBootstrapMain {
 //        logger.log(Level.INFO, "init MongoDBConnActor...");
 //        GlobalAkkaPara.globalActorRefMap.put(GlobalActorRefName.MONGODB_CONN_ACTOR, mongoDBActorRef);
 
-        ActorRef<BasicCommon> cloudKafkaConnectInActorRef = system.systemActorOf(CloudKafkaConnectInActor.create(),
-                GlobalActorRefName.CLOUD_KAFKA_CONNECT_IN_ACTOR, Props.empty());
-        logger.log(Level.INFO, "init CloudKafkaConnectInActor...");
-        GlobalAkkaPara.globalActorRefMap.put(GlobalActorRefName.CLOUD_KAFKA_CONNECT_IN_ACTOR, cloudKafkaConnectInActorRef);
+//        ActorRef<BasicCommon> cloudKafkaConnectInActorRef = system.systemActorOf(CloudKafkaConnectInActor.create(),
+//                GlobalActorRefName.CLOUD_KAFKA_CONNECT_IN_ACTOR, Props.empty());
+//        logger.log(Level.INFO, "init CloudKafkaConnectInActor...");
+//        GlobalAkkaPara.globalActorRefMap.put(GlobalActorRefName.CLOUD_KAFKA_CONNECT_IN_ACTOR, cloudKafkaConnectInActorRef);
 
 //        httpClientConn(system);
 //        CloudKafkaConsumer.init(system);
@@ -59,6 +60,7 @@ public class ActorBootstrapMain {
 
         System.out.println("Server online at http://192.168.123.131:8080/\nPress RETURN to stop...");
         System.in.read(); // let it run until user presses return
+
 
         binding
                 .thenCompose(ServerBinding::unbind) // trigger unbinding from the port
