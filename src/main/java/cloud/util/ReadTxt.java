@@ -21,15 +21,18 @@ public class ReadTxt {
 
         List<String> taskList = new ArrayList<>();
         List<String> resourceList = new ArrayList<>();
+        List<String> costList = new ArrayList<>();
+
 
         List<StringBuffer> curProcessTime = new ArrayList<>();
+        List<StringBuffer> curProcessCost = new ArrayList<>();
 
         int accProcessNum = 0;
 
         try { // 防止文件建立或读取失败，用catch捕捉错误并打印，也可以throw
 
             /* 读入TXT文件 */
-            String pathname =GlobalAkkaPara.dataPath +"write"+ GlobalAkkaPara.resourceSize + "-" + (GlobalAkkaPara.taskSize*taskNum) +"-" + rapid +".txt"; // 绝对路径或相对路径都可以，这里是绝对路径，写入文件时演示相对路径
+            String pathname =GlobalAkkaPara.dataPath +"write-with-cost"+ GlobalAkkaPara.resourceSize + "-" + (GlobalAkkaPara.taskSize*taskNum) +"-" + rapid +".txt"; // 绝对路径或相对路径都可以，这里是绝对路径，写入文件时演示相对路径
             File filename = new File(pathname); // 要读取以上路径的input。txt文件
             InputStreamReader reader = new InputStreamReader(
                     new FileInputStream(filename)); // 建立一个输入流对象reader
@@ -51,26 +54,36 @@ public class ReadTxt {
                     } else {
                         String [] strs = line.split(",");
                         if (curProcessTime.size() == 0) {
-                            for (int i=0; i<strs.length; i++) {
+                            for (int i=0; i<strs.length/2; i++) {
                                 curProcessTime.add(new StringBuffer());
+                                curProcessCost.add(new StringBuffer());
                             }
                         }
-                        for (int i=0; i<strs.length; i++) {
+                        for (int i=0; i<strs.length/2; i++) {
                             curProcessTime.get(i).append(strs[i]);
                             curProcessTime.get(i).append(',');
                         }
+                        for (int i=0; i<strs.length/2; i++) {
+                            curProcessCost.get(i).append(strs[strs.length/2+i]);
+                            curProcessCost.get(i).append(',');
+                        }
+
                     }
 //                    System.out.println(line);
                 }
             } while ( line != null);
+            br.close();
+            reader.close();
         }catch (Exception e){
             e.printStackTrace();
         }
         for (int i=0; i<curProcessTime.size(); i++) {
             resourceList.add(curProcessTime.get(i).deleteCharAt(curProcessTime.get(i).length()-1).toString());
+            costList.add(curProcessCost.get(i).deleteCharAt(curProcessCost.get(i).length()-1).toString());
         }
         taskAndResourceData.add(taskList);
         taskAndResourceData.add(resourceList);
+        taskAndResourceData.add(costList);
 
         printTaskAndResource(taskAndResourceData);
 
@@ -79,13 +92,21 @@ public class ReadTxt {
 
     private void printTaskAndResource(List<List<String>> taskAndResourceData) {
         List<String> tasks = taskAndResourceData.get(0);
+        System.out.println("task : ");
         for (int i=0; i<tasks.size(); i++) {
             System.out.println(tasks.get(i));
         }
 
+        System.out.println("resource : ");
         List<String> resources = taskAndResourceData.get(1);
         for (int i=0; i<resources.size(); i++) {
             System.out.println(resources.get(i));
+        }
+
+        System.out.println("cost : ");
+        List<String> costList = taskAndResourceData.get(2);
+        for (int i=0; i<costList.size(); i++) {
+            System.out.println(costList.get(i));
         }
     }
 

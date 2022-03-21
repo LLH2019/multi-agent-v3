@@ -9,8 +9,6 @@ import akka.actor.typed.javadsl.Receive;
 import base.model.bean.BasicCommon;
 import base.model.connect.bean.KafkaMsg;
 import cloud.bean.*;
-import jnr.ffi.annotations.In;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -33,23 +31,34 @@ public class MdResourceActor extends AbstractBehavior<BasicCommon> {
 
     private final List<Integer> processTimes;
 
+    private final List<Integer> processCosts;
+
     private final String name;
 
     private List<ProcessTime> haveAssignedTimes = new CopyOnWriteArrayList<>();
 
-    public MdResourceActor(ActorContext<BasicCommon> context, String processTime, String name, ActorRef<BasicCommon> brainRef) {
+    public MdResourceActor(ActorContext<BasicCommon> context, String processTime,String processCost, String name, ActorRef<BasicCommon> brainRef) {
         super(context);
         logger.log(Level.INFO, "MdResourceActor pre init...");
         this.ref = context.getSelf();
         this.brainRef = brainRef;
-
+        // 加工时间预处理
         String [] times = processTime.split(",");
-        List<Integer> lists = new ArrayList<>();
+        List<Integer> timeList = new ArrayList<>();
         for (String time : times) {
-            lists.add(Integer.parseInt(time));
+            timeList.add(Integer.parseInt(time));
         }
-        this.processTimes = lists;
-        System.out.println(" processTime " + processTime);
+        this.processTimes = timeList;
+
+        // 加工成本预处理
+        String [] costs = processCost.split(",");
+        List<Integer> costList = new ArrayList<>();
+        for (String cost : costs) {
+            costList.add(Integer.parseInt(cost));
+        }
+        this.processCosts = costList;
+
+//        System.out.println(" processTime " + processTime);
 
         this.name = name;
         this.haveAssignedTimes = new CopyOnWriteArrayList<>();
@@ -58,8 +67,8 @@ public class MdResourceActor extends AbstractBehavior<BasicCommon> {
         logger.log(Level.INFO, "MdResourceActor init...");
     }
 
-    public static Behavior<BasicCommon> create(String processTime, String name, ActorRef<BasicCommon> brainRef) {
-        return Behaviors.setup(context -> new MdResourceActor(context, processTime, name, brainRef));
+    public static Behavior<BasicCommon> create(String processTime, String processCost,String name, ActorRef<BasicCommon> brainRef) {
+        return Behaviors.setup(context -> new MdResourceActor(context, processTime, processCost, name, brainRef));
     }
 
     @Override

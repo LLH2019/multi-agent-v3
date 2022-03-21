@@ -18,13 +18,13 @@ public class SimulationDataGenerator {
         List<List<int[]>> tasks = new ArrayList<>();
         Random random = new Random();
 
-
         for (int i=0; i<taskSize; i++) {
             List<int[]> curTask = new ArrayList<>();
             int processNum = random.nextInt(5)+3;
 
             for (int j=0; j<processNum; j++) {
-                int[] processTime = new int[resourceSize];
+                // processTime 数据0-resourceSize为处理时间， resourceSize-2*resourceSize为加工成本情况
+                int[] processTime = new int[resourceSize*2];
                 for (int k = 0; k < resourceSize; k++) {
                     processTime[k] = random.nextInt(50) + 4;
                     int randomN = random.nextInt(10);
@@ -32,6 +32,11 @@ public class SimulationDataGenerator {
                         processTime[j] = 9999;
                     }
                 }
+
+                for (int k=resourceSize; k<2*resourceSize; k++) {
+                    processTime[k] = random.nextInt(20)+10;
+                }
+
                 curTask.add(processTime);
             }
             tasks.add(curTask);
@@ -44,7 +49,30 @@ public class SimulationDataGenerator {
 //            tasks.get(i)[j%tasks.get(i).length] = 9999;
 //        }
 
+        int [][] resourceDis = new int[resourceSize][resourceSize];
+        for(int i=0; i<resourceSize; i++) {
+            for (int j=0; j<i; j++) {
+                if (i<=4 || (i<=9 && j>=5) || (i<=14 && j>=10) || (i<=19 && j>=15)) {
+                    resourceDis[i][j] = random.nextInt(3);
+                } else {
+                    resourceDis[i][j] = random.nextInt(3)+3;
+                }
+            }
+        }
+        for (int i=0; i<resourceSize; i++) {
+            for (int j=i+1; j<resourceSize; j++) {
+                resourceDis[i][j] = resourceDis[j][i];
+            }
+        }
+
         printData(tasks,resourceSize);
+        for (int i=0; i<resourceSize; i++) {
+            for (int j=0; j<resourceSize; j++) {
+                System.out.print(resourceDis[i][j] + " ");
+            }
+            System.out.println();
+        }
+
         return tasks;
     }
 
@@ -52,7 +80,7 @@ public class SimulationDataGenerator {
         for (int i=0; i<tasks.size(); i++) {
             System.out.println( i + "  " + tasks.get(i).size());
             for (int j=0; j<tasks.get(i).size(); j++) {
-                for (int k=0; k<resourceSize; k++) {
+                for (int k=0; k<2*resourceSize; k++) {
                     System.out.print(tasks.get(i).get(j)[k] + " ");
                 }
                 System.out.println();
@@ -75,7 +103,7 @@ public class SimulationDataGenerator {
                 List<List<int[]>> datas = simulationDataGenerator.generateData(taskSize*taskNum, resourceSize);
 
                 try {
-                    File writeName = new File("D:\\Coding\\JavaProject\\multi-agent-v3\\data\\write" + resourceSize + "-" + (taskSize*taskNum) +"-" + rapid +".txt"); // 相对路径，如果没有则要建立一个新的output.txt文件
+                    File writeName = new File("D:\\Coding\\JavaProject\\multi-agent-v3\\data\\write-with-cost-and-trans" + resourceSize + "-" + (taskSize*taskNum) +"-" + rapid +".txt"); // 相对路径，如果没有则要建立一个新的output.txt文件
                     if (!writeName.exists()) {
                         writeName.createNewFile(); // 创建新文件,有同名的文件的话直接覆盖
                     }

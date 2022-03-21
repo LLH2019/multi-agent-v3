@@ -17,12 +17,11 @@ public class GlobalAkkaPara {
     public final static ActorSystem<Void> system = ActorSystem.create(Behaviors.empty(), "bootstrap");
     public final static List<String> podList = new ArrayList<>(Arrays.asList("pod-111"));
 
-    public static int taskNum = 0;
-    public static int rapid =0;
+    public static int taskNum = 1;
+    public static int rapid =1;
 
     public static int taskSize = 20;
     public static int resourceSize = 20;
 
-    public static String dataPath = "/";
-
+    public static String dataPath = "D:\\Coding\\JavaProject\\multi-agent-v3\\data\\";
 }

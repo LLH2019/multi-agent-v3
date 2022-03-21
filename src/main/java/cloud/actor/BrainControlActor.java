@@ -56,7 +56,7 @@ public class BrainControlActor extends AbstractBehavior<BasicCommon> {
         ReadTxt readTxt =  new ReadTxt();
         List<List<String>> taskAndResources = readTxt.readTxtData(GlobalAkkaPara.taskNum, GlobalAkkaPara.rapid);
 
-        setupResourceActor(taskAndResources.get(1));
+        setupResourceActor(taskAndResources.get(1), taskAndResources.get(2));
         setupSecondBrainActor(taskAndResources.get(0));
 
 //        startBiding();
@@ -137,8 +137,10 @@ public class BrainControlActor extends AbstractBehavior<BasicCommon> {
         secondBrainRefMaps.get("secondBrain0").tell(startBiding);
     }
 
-    private void setupResourceActor(List<String> resources) {
+    private void setupResourceActor(List<String> resources, List<String> cost) {
         List<String> processTimes = resources;
+
+        List<String> processCost = cost;
 
 //                new ArrayList<>();
 //        processTimes.add("3,5,7,9,999,45,67,4");
@@ -160,7 +162,7 @@ public class BrainControlActor extends AbstractBehavior<BasicCommon> {
 
         for (int i=0; i<processTimes.size(); i++) {
             String refName = "Resource" + i;
-            ActorRef<BasicCommon> mdResourceRef = getContext().spawn(MdResourceActor.create(processTimes.get(i), refName, this.ref), refName);
+            ActorRef<BasicCommon> mdResourceRef = getContext().spawn(MdResourceActor.create(processTimes.get(i), processCost.get(i), refName, this.ref), refName);
             mdResourceRefMaps.put(refName, mdResourceRef);
         }
     }

@@ -93,13 +93,18 @@ public class HandleOutputData {
             }
         }
 
+        StringBuffer sb = new StringBuffer();
+
         for (Map.Entry<Integer, List<Integer>> entry: maxNumMaps.entrySet()) {
             System.out.print(entry.getKey() + " ");
             for (int val : entry.getValue()) {
                 System.out.print(val + " ");
+                sb.append(val);
+                sb.append(",");
             }
             System.out.println();
         }
+        System.out.println(sb.toString());
 
     }
 
